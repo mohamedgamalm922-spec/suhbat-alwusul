@@ -3,16 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#963814">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="عبادات مسلم">
     <title>خريطة الوصول - منصة عبادات مسلم</title>
     
-    <!-- PWA Manifest Inline Data URI -->
-    <link rel="manifest" href='data:application/manifest+json,{"name":"عبادات مسلم - خريطة الوصول","short_name":"عبادات مسلم","start_url":".","display":"standalone","background_color":"#FDF7EF","theme_color":"#963814","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/3602/3602123.png","sizes":"512x512","type":"image/png"}]}'>
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3602/3602123.png">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -87,17 +79,6 @@
 </head>
 <body class="min-h-screen pb-20 selection:bg-warm-goldLight selection:text-warm-amberDark">
 
-    <!-- شريط تثبيت التطبيق PWA للموبايل -->
-    <div id="pwa-install-banner" class="hidden bg-warm-amberDark text-white p-3 px-4 shadow-md flex justify-between items-center text-xs font-bold font-amiri sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <i data-lucide="download" class="w-4 h-4 text-warm-gold"></i>
-            <span>تثبيت تطبيق "عبادات مسلم" على الشاشة الرئيسية للجوال</span>
-        </div>
-        <button id="pwa-install-btn" class="bg-warm-gold hover:bg-warm-goldLight text-warm-amberDark font-bold px-3 py-1 rounded-lg text-xs transition">
-            تثبيت الآن 📲
-        </button>
-    </div>
-
     <!-- شاشة تسجيل الدخول -->
     <div id="login-section" class="max-w-md mx-auto mt-14 p-8 bg-white rounded-3xl ornate-card border-warm-borderGold/40 relative">
         <div class="text-center mb-8">
@@ -131,7 +112,7 @@
     <!-- تطبيق المنصة الرئيسي -->
     <div id="app-section" class="hidden max-w-4xl mx-auto p-4 sm:p-6">
         
-        <!-- الهيدر والترحيب والتاريخ الهجري والميلادي -->
+        <!-- الهيدر والترحيب والتاريخ الهجري والميلادي ورابط الدورة -->
         <div class="bg-gradient-to-r from-[#4A1706] via-[#75280E] to-[#4A1706] text-white p-6 sm:p-8 rounded-3xl mb-6 shadow-lg relative overflow-hidden border-2 border-warm-borderGold/50">
             <div class="absolute inset-0 lantern-pattern opacity-30 pointer-events-none"></div>
             
@@ -145,6 +126,12 @@
                         <i data-lucide="calendar" class="w-4 h-4 text-warm-gold shrink-0"></i>
                         <span id="date-text"></span>
                     </p>
+                    
+                    <!-- زر الانتقال السريع لموقع الدورة الرسمي -->
+                    <a href="https://kharetah-table.pages.dev/app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-warm-gold hover:bg-white text-warm-amberDark font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-md mt-4 font-amiri border border-warm-borderGold">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        <span>الذهاب لموقع الدورة الرسمي (جدول الوصول) 🌐</span>
+                    </a>
                 </div>
                 <button onclick="logout()" class="text-sm bg-warm-amberDark/80 hover:bg-warm-rubyWarm text-white px-4 py-2.5 rounded-xl border border-warm-borderGold/30 transition-all flex items-center gap-2 self-end sm:self-center font-bold shadow-sm">
                     <i data-lucide="log-out" class="w-4 h-4"></i> خروج
@@ -169,14 +156,14 @@
                 <button onclick="switchTab('progress')" id="tab-progress" class="tab-btn px-4 py-3 text-sm font-bold text-warm-muted rounded-xl transition-all flex items-center gap-2">
                     <i data-lucide="bar-chart-3" class="w-4 h-4 text-warm-amberPrimary"></i> سجلي وتقدّمي
                 </button>
+                <button onclick="switchTab('official')" id="tab-official" class="tab-btn px-4 py-3 text-sm font-bold text-warm-muted rounded-xl transition-all flex items-center gap-2">
+                    <i data-lucide="globe" class="w-4 h-4 text-warm-amberPrimary"></i> موقع الدورة الرسمي 🌐
+                </button>
                 <button onclick="switchTab('quran')" id="tab-quran" class="tab-btn px-4 py-3 text-sm font-bold text-warm-muted rounded-xl transition-all flex items-center gap-2">
                     <i data-lucide="book-open" class="w-4 h-4 text-warm-amberPrimary"></i> المصحف الشريف
                 </button>
                 <button onclick="switchTab('adhkar')" id="tab-adhkar" class="tab-btn px-4 py-3 text-sm font-bold text-warm-muted rounded-xl transition-all flex items-center gap-2">
                     <i data-lucide="heart-handshake" class="w-4 h-4 text-warm-amberPrimary"></i> الأذكار وأدعيتي
-                </button>
-                <button onclick="switchTab('reminders')" id="tab-reminders" class="tab-btn px-4 py-3 text-sm font-bold text-warm-muted rounded-xl transition-all flex items-center gap-2">
-                    <i data-lucide="bell" class="w-4 h-4 text-warm-amberPrimary"></i> التنبيهات والتقويم
                 </button>
             </div>
         </div>
@@ -188,7 +175,7 @@
             <div class="flex items-center justify-between bg-warm-goldLight/60 p-3.5 rounded-2xl border border-warm-borderGold/40 text-xs font-bold text-warm-amberDark">
                 <span class="flex items-center gap-2">
                     <i data-lucide="sparkles" class="w-4 h-4 text-warm-gold"></i>
-                    متابعة الأوراد تتم بالحفظ التلقائي الفوري فور تفعيل أي عبادة.
+                    متابعة الأوراد تتم بالحفظ التلقائي الفوري والمضمون فور تفعيل أي عبادة.
                 </span>
                 <span id="daily-auto-save-status" class="hidden items-center gap-1.5 bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-300">
                     <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> تم حفظ التغيير
@@ -462,7 +449,28 @@
             </div>
         </div>
 
-        <!-- محتوى التبويب 3: المصحف الشريف -->
+        <!-- محتوى التبويب 3: موقع الدورة الرسمي -->
+        <div id="content-official" class="tab-content hidden space-y-4">
+            <div class="bg-white p-5 rounded-3xl ornate-card">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 pb-3 border-b border-warm-border">
+                    <div>
+                        <h3 class="font-amiri font-bold text-warm-amberDark text-xl flex items-center gap-2.5">
+                            <i data-lucide="globe" class="w-6 h-6 text-warm-gold"></i> موقع الدورة الرسمي (جدول الوصول)
+                        </h3>
+                        <p class="text-xs text-warm-muted mt-1 font-bold">يمكنك المتابعة والتسجيل اليومي المباشر عبر المنصة الرسمية أدناه</p>
+                    </div>
+                    <a href="https://kharetah-table.pages.dev/app/" target="_blank" rel="noopener noreferrer" class="bg-warm-amberPrimary hover:bg-warm-amberDark text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shrink-0 font-amiri">
+                        <span>فتح في نافذة جديدة</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+                <div class="w-full h-[700px] rounded-2xl overflow-hidden border border-warm-border shadow-inner">
+                    <iframe src="https://kharetah-table.pages.dev/app/" class="w-full h-full border-0" title="موقع الدورة الرسمي"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى التبويب 4: المصحف الشريف -->
         <div id="content-quran" class="tab-content hidden space-y-4">
             <div class="bg-white p-5 rounded-3xl ornate-card">
                 <h3 class="font-amiri font-bold text-warm-amberDark text-xl mb-4 flex items-center gap-2.5">
@@ -474,7 +482,7 @@
             </div>
         </div>
 
-        <!-- محتوى التبويب 4: الأذكار وأدعيتي -->
+        <!-- محتوى التبويب 5: الأذكار وأدعيتي -->
         <div id="content-adhkar" class="tab-content hidden space-y-6">
             <div class="flex bg-warm-bg p-1.5 rounded-2xl gap-1.5 overflow-x-auto text-xs font-bold border border-warm-border">
                 <button onclick="showAdhkarSub('morning')" id="adhkar-sub-morning" class="adhkar-tab active flex-1 py-2.5 px-3.5 rounded-xl transition text-center whitespace-nowrap">أذكار الصباح</button>
@@ -557,145 +565,6 @@
             </div>
         </div>
 
-        <!-- محتوى التبويب 5: التنبيهات وإعدادات الأوقات المفصلة -->
-        <div id="content-reminders" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-3xl ornate-card">
-                <div class="flex items-center justify-between border-b border-warm-border pb-3.5 mb-2">
-                    <h3 class="font-amiri font-bold text-warm-amberDark text-xl flex items-center gap-2.5">
-                        <i data-lucide="clock" class="w-6 h-6 text-warm-gold"></i> ضبط أوقات التنبيهات والربط بـ تقويم الهاتف
-                    </h3>
-                    <span id="auto-save-status" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 hidden flex items-center gap-1">
-                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> تم الحفظ تلقائياً
-                    </span>
-                </div>
-                
-                <div class="bg-warm-goldLight/50 p-4 rounded-2xl border border-warm-borderGold/40 text-xs font-bold text-warm-amberDark mb-6 leading-relaxed">
-                    💡 <strong>لضمان وصول التنبيه بصوت واهتزاز على الهاتف أثناء قفل الشاشة:</strong><br>
-                    اضبط الوقت لكل ورد، ثم اضغط على زر <strong>"Google Calendar"</strong> أو <strong>"تقويم الهاتف (.ics)"</strong> لإضافة تذكير يومي مكرر في تقويم جوالك مباشرة.
-                </div>
-
-                <form id="reminders-form" class="space-y-5" onsubmit="event.preventDefault();">
-                    <div class="grid grid-cols-1 gap-4">
-                        
-                        <!-- أذكار الصباح -->
-                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
-                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
-                                <i data-lucide="sun" class="w-4 h-4 text-warm-gold"></i> وقت أذكار الصباح
-                            </label>
-                            <div class="flex flex-col sm:flex-row gap-2.5">
-                                <input type="time" id="time-morning" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="addToGoogleCalendar('أذكار الصباح ☀️', 'time-morning')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
-                                        📅 Google Calendar
-                                    </button>
-                                    <button type="button" onclick="downloadIcsReminder('أذكار الصباح ☀️', 'time-morning')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
-                                        📲 تقويم الهاتف (.ics)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- أذكار المساء -->
-                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
-                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
-                                <i data-lucide="moon" class="w-4 h-4 text-warm-amberPrimary"></i> وقت أذكار المساء
-                            </label>
-                            <div class="flex flex-col sm:flex-row gap-2.5">
-                                <input type="time" id="time-evening" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="addToGoogleCalendar('أذكار المساء 🌙', 'time-evening')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
-                                        📅 Google Calendar
-                                    </button>
-                                    <button type="button" onclick="downloadIcsReminder('أذكار المساء 🌙', 'time-evening')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
-                                        📲 تقويم الهاتف (.ics)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- قيام الليل -->
-                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
-                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
-                                <i data-lucide="sparkles" class="w-4 h-4 text-warm-gold"></i> وقت قيام الليل والوتر
-                            </label>
-                            <div class="flex flex-col sm:flex-row gap-2.5">
-                                <input type="time" id="time-qiyam" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="addToGoogleCalendar('قيام الليل والوتر 🌌', 'time-qiyam')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
-                                        📅 Google Calendar
-                                    </button>
-                                    <button type="button" onclick="downloadIcsReminder('قيام الليل والوتر 🌌', 'time-qiyam')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
-                                        📲 تقويم الهاتف (.ics)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ورد القرآن الكريم -->
-                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
-                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
-                                <i data-lucide="book-open" class="w-4 h-4 text-warm-amberPrimary"></i> وقت قراءة القرآن الكريم
-                            </label>
-                            <div class="flex flex-col sm:flex-row gap-2.5">
-                                <input type="time" id="time-quran" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="addToGoogleCalendar('ورد القرآن الكريم 📖', 'time-quran')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
-                                        📅 Google Calendar
-                                    </button>
-                                    <button type="button" onclick="downloadIcsReminder('ورد القرآن الكريم 📖', 'time-quran')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
-                                        📲 تقويم الهاتف (.ics)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ورد الاستغفار -->
-                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
-                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
-                                <i data-lucide="repeat" class="w-4 h-4 text-warm-amberPrimary"></i> وقت الاستغفار (100 مرة)
-                            </label>
-                            <div class="flex flex-col sm:flex-row gap-2.5">
-                                <input type="time" id="time-istighfar" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="addToGoogleCalendar('ورد الاستغفار ✨', 'time-istighfar')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
-                                        📅 Google Calendar
-                                    </button>
-                                    <button type="button" onclick="downloadIcsReminder('ورد الاستغفار ✨', 'time-istighfar')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
-                                        📲 تقويم الهاتف (.ics)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- الصلاة على النبي -->
-                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
-                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
-                                <i data-lucide="heart-handshake" class="w-4 h-4 text-warm-rubyWarm"></i> وقت الصلاة على النبي ﷺ
-                            </label>
-                            <div class="flex flex-col sm:flex-row gap-2.5">
-                                <input type="time" id="time-salawat" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="addToGoogleCalendar('ورد الصلاة على النبي ﷺ 💚', 'time-salawat')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
-                                        📅 Google Calendar
-                                    </button>
-                                    <button type="button" onclick="downloadIcsReminder('ورد الصلاة على النبي ﷺ 💚', 'time-salawat')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
-                                        📲 تقويم الهاتف (.ics)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="pt-2">
-                        <button type="button" onclick="requestNotificationPermission()" class="w-full bg-warm-bg hover:bg-warm-goldLight text-warm-txt hover:text-warm-amberDark text-sm font-bold py-3.5 rounded-2xl border border-warm-border transition flex items-center justify-center gap-2">
-                            <i data-lucide="bell-ring" class="w-4 h-4 text-warm-gold"></i> تفعيل إشعارات المتصفح والتنبيهات المباشرة
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
     </div>
 
     <!-- نافذة المسبحة الإلكترونية التفاعلية -->
@@ -724,14 +593,13 @@
         </div>
     </div>
 
-    <!-- Script JavaScript الرئيسي مع دعم التقويم و PWA -->
+    <!-- Script JavaScript الرئيسي المحسن للحفظ والربط بالموقع الرسمي -->
     <script>
         const SUPABASE_URL = "https://foovhcbococbipggfhmv.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_C-v8EdUNhwZ7MjkPLonvmA_vD_jYWcy";
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let currentUser = JSON.parse(localStorage.getItem('user_data')) || null;
-        let deferredPrompt = null;
 
         const allTaskKeys = [
             'fard_fajr', 'sunnah_fajr',
@@ -751,33 +619,9 @@
         let activeTargetCount = 100;
         let currentModalCount = 0;
 
-        function getTimeValue(elementId) {
-            const val = document.getElementById(elementId).value;
-            return (val && val.trim() !== "") ? val : null;
-        }
-
         function getTodayStr() {
             return new Date().toISOString().split('T')[0];
         }
-
-        // إعداد PWA Install Prompt
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const banner = document.getElementById('pwa-install-banner');
-            if (banner) banner.classList.remove('hidden');
-        });
-
-        document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    document.getElementById('pwa-install-banner')?.classList.add('hidden');
-                }
-                deferredPrompt = null;
-            }
-        });
 
         window.onload = () => {
             const gregorianDate = new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -807,82 +651,14 @@
                 loadCustomDuaas();
             }
 
-            const reminderInputs = document.querySelectorAll('#reminders-form input[type="time"]');
-            reminderInputs.forEach(input => {
-                input.addEventListener('change', autoSaveReminders);
-            });
-
+            // ربط كل المربعات بالحفظ التلقائي المضمون
             allTaskKeys.forEach(k => {
                 const checkbox = document.getElementById(k);
                 if (checkbox) {
                     checkbox.addEventListener('change', autoSaveDailyLog);
                 }
             });
-
-            startNotificationChecker();
         };
-
-        // دوال الربط بتقويم الهاتف
-        function addToGoogleCalendar(title, timeInputId) {
-            const timeVal = document.getElementById(timeInputId).value;
-            if (!timeVal) {
-                alert("برجاء تحديد وقت التذكير أولاً قبل الإضافة للتقويم.");
-                return;
-            }
-            const [hh, mm] = timeVal.split(':');
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-
-            const startIso = `${year}${month}${day}T${hh}${mm}00`;
-            const endIso = `${year}${month}${day}T${hh}${String(parseInt(mm) + 15).padStart(2, '0')}00`;
-
-            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent('تذكير يومي مكرر من تطبيق عبادات مسلم')}&location=${encodeURIComponent('منصة عبادات مسلم')}&dates=${startIso}/${endIso}&recur=RRULE:FREQ=DAILY`;
-            window.open(googleUrl, '_blank');
-        }
-
-        function downloadIcsReminder(title, timeInputId) {
-            const timeVal = document.getElementById(timeInputId).value;
-            if (!timeVal) {
-                alert("برجاء تحديد وقت التذكير أولاً قبل الإضافة للتقويم.");
-                return;
-            }
-            const [hh, mm] = timeVal.split(':');
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-
-            const startIso = `${year}${month}${day}T${hh}${mm}00`;
-            const endIso = `${year}${month}${day}T${hh}${String(parseInt(mm) + 15).padStart(2, '0')}00`;
-
-            const icsContent = 
-`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//عبادات مسلم//تطبيق الأوراد//AR
-BEGIN:VEVENT
-SUMMARY:${title}
-DESCRIPTION:تذكير يومي مكرر من تطبيق عبادات مسلم
-DTSTART:${startIso}
-DTEND:${endIso}
-RRULE:FREQ=DAILY
-BEGIN:VALARM
-TRIGGER:-PT0M
-ACTION:DISPLAY
-DESCRIPTION:${title}
-END:VALARM
-END:VEVENT
-END:VCALENDAR`;
-
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.setAttribute('download', `${title.replace(/[^\w\s]/gi, '')}.ics`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
 
         function updateMainPageCounters() {
             const today = getTodayStr();
@@ -956,37 +732,45 @@ END:VCALENDAR`;
             loadCustomDuaas();
         };
 
+        // عرض شاشة التطبيق مع استرجاع البيانات الفوري
         async function showAppScreen() {
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('app-section').classList.remove('hidden');
             document.getElementById('user-welcome').innerText = `أهلاً بك، ${currentUser.full_name}`;
 
-            if (currentUser.morning_reminder_time) document.getElementById('time-morning').value = currentUser.morning_reminder_time;
-            if (currentUser.evening_reminder_time) document.getElementById('time-evening').value = currentUser.evening_reminder_time;
-            if (currentUser.qiyam_reminder_time) document.getElementById('time-qiyam').value = currentUser.qiyam_reminder_time;
-            if (currentUser.baqiyat_reminder_time) document.getElementById('time-baqiyat').value = currentUser.baqiyat_reminder_time;
-            if (currentUser.duaa_reminder_time) document.getElementById('time-duaa').value = currentUser.duaa_reminder_time;
-            if (currentUser.quran_reminder_time) document.getElementById('time-quran').value = currentUser.quran_reminder_time;
-            if (currentUser.istighfar_reminder_time) document.getElementById('time-istighfar').value = currentUser.istighfar_reminder_time;
-            if (currentUser.salawat_reminder_time) document.getElementById('time-salawat').value = currentUser.salawat_reminder_time;
-
             const today = getTodayStr();
-            const { data } = await db.from('daily_logs').select('*').eq('user_phone', currentUser.phone).eq('log_date', today).single();
+            const localKey = `daily_log_${currentUser.phone}_${today}`;
+            
+            // 1. استرجاع فوري للذاكرة المحلية لمنع أي تأخير
+            let localLog = JSON.parse(localStorage.getItem(localKey)) || {};
             
             allTaskKeys.forEach(k => {
-                if (document.getElementById(k)) document.getElementById(k).checked = false;
+                const el = document.getElementById(k);
+                if (el) el.checked = !!localLog[k];
             });
+            updateProgressBar(localLog);
+            updateMainPageCounters();
 
-            if (data) {
+            // 2. جلب البيانات من السيرفر وتحديث الذاكرة
+            const { data, error } = await db.from('daily_logs')
+                .select('*')
+                .eq('user_phone', currentUser.phone)
+                .eq('log_date', today)
+                .maybeSingle();
+
+            if (data && !error) {
                 allTaskKeys.forEach(k => {
-                    if (document.getElementById(k)) document.getElementById(k).checked = data[k] || false;
+                    const el = document.getElementById(k);
+                    if (el) {
+                        const val = (data[k] !== undefined) ? data[k] : !!localLog[k];
+                        el.checked = val;
+                        localLog[k] = val;
+                    }
                 });
-                updateProgressBar(data);
-            } else {
-                updateProgressBar({});
+                localStorage.setItem(localKey, JSON.stringify(localLog));
+                updateProgressBar(localLog);
             }
 
-            updateMainPageCounters();
             renderAdhkarLists();
             lucide.createIcons();
         }
@@ -1008,6 +792,7 @@ END:VCALENDAR`;
             }
         }
 
+        // دالة الحفظ الفوري التلقائي (محلي + قاعدة بيانات)
         async function autoSaveDailyLog() {
             if (!currentUser) return;
 
@@ -1018,95 +803,31 @@ END:VCALENDAR`;
             }
 
             const today = getTodayStr();
+            const localKey = `daily_log_${currentUser.phone}_${today}`;
+            
             const payload = { user_phone: currentUser.phone, log_date: today };
-            allTaskKeys.forEach(k => { payload[k] = document.getElementById(k).checked; });
+            allTaskKeys.forEach(k => { 
+                const el = document.getElementById(k);
+                payload[k] = el ? el.checked : false; 
+            });
 
+            // حفظ فوري بالذاكرة المحلية لضمان الإظهار عدم الضياع مطلقاً
+            localStorage.setItem(localKey, JSON.stringify(payload));
             updateProgressBar(payload);
 
+            // حفظ في السيرفر Supabase
             const { error } = await db.from('daily_logs').upsert(payload, { onConflict: 'user_phone,log_date' });
             
             if (error) {
-                console.error("خطأ في حفظ الورد التلقائي:", error.message);
-            } else {
-                setTimeout(() => {
-                    if (statusEl) {
-                        statusEl.classList.add('hidden');
-                        statusEl.classList.remove('flex');
-                    }
-                }, 2000);
+                console.error("خطأ في حفظ الورد التلقائي بالسيرفر:", error.message);
             }
-        }
-
-        async function autoSaveReminders() {
-            if (!currentUser) return;
             
-            const statusEl = document.getElementById('auto-save-status');
-            if (statusEl) {
-                statusEl.classList.remove('hidden');
-                statusEl.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> جاري الحفظ...`;
-                lucide.createIcons();
-            }
-
-            const payload = {
-                morning_reminder_time: getTimeValue('time-morning'),
-                evening_reminder_time: getTimeValue('time-evening'),
-                qiyam_reminder_time: getTimeValue('time-qiyam'),
-                baqiyat_reminder_time: getTimeValue('time-baqiyat'),
-                duaa_reminder_time: getTimeValue('time-duaa'),
-                quran_reminder_time: getTimeValue('time-quran'),
-                istighfar_reminder_time: getTimeValue('time-istighfar'),
-                salawat_reminder_time: getTimeValue('time-salawat')
-            };
-
-            const { error } = await db.from('users').update(payload).eq('phone', currentUser.phone);
-
-            if (statusEl) {
-                if (error) {
-                    statusEl.innerHTML = `<i data-lucide="alert-circle" class="w-3.5 h-3.5 text-red-600"></i> خطأ في الحفظ`;
-                } else {
-                    Object.assign(currentUser, payload);
-                    localStorage.setItem('user_data', JSON.stringify(currentUser));
-                    
-                    statusEl.innerHTML = `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> تم الحفظ تلقائياً`;
-                    setTimeout(() => { statusEl.classList.add('hidden'); }, 2500);
+            setTimeout(() => {
+                if (statusEl) {
+                    statusEl.classList.add('hidden');
+                    statusEl.classList.remove('flex');
                 }
-                lucide.createIcons();
-            }
-        }
-
-        function startNotificationChecker() {
-            setInterval(() => {
-                if (!currentUser || Notification.permission !== "granted") return;
-                
-                const now = new Date();
-                const currentHHMM = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-                const today = getTodayStr();
-
-                const remindersMap = [
-                    { key: 'morning_reminder_time', title: 'أذكار الصباح ☀️', body: 'حان الآن موعد أذكار الصباح' },
-                    { key: 'evening_reminder_time', title: 'أذكار المساء 🌙', body: 'حان الآن موعد أذكار المساء' },
-                    { key: 'qiyam_reminder_time', title: 'قيام الليل والوتر 🌌', body: 'حان الآن موعد قيام الليل والوتر' },
-                    { key: 'baqiyat_reminder_time', title: 'الباقيات الصالحات 📿', body: 'حان الآن موعد أوراد الباقيات الصالحات' },
-                    { key: 'duaa_reminder_time', title: 'ورد الدعاء والمناجاة 🤲', body: 'حان الآن موعد ورد الدعاء والمناجاة' },
-                    { key: 'quran_reminder_time', title: 'ورد القرآن الكريم 📖', body: 'حان الآن موعد ورد قراءة القرآن الكريم' },
-                    { key: 'istighfar_reminder_time', title: 'ورد الاستغفار ✨', body: 'حان الآن موعد ورد الاستغفار' },
-                    { key: 'salawat_reminder_time', title: 'الصلاة على النبي ﷺ 💚', body: 'حان الآن موعد ورد الصلاة على النبي ﷺ' }
-                ];
-
-                remindersMap.forEach(item => {
-                    const setTime = currentUser[item.key];
-                    if (setTime && setTime === currentHHMM) {
-                        const notifId = `notified_${item.key}_${today}_${setTime}`;
-                        if (!localStorage.getItem(notifId)) {
-                            new Notification(item.title, {
-                                body: item.body,
-                                icon: 'https://cdn-icons-png.flaticon.com/512/3602/3602123.png'
-                            });
-                            localStorage.setItem(notifId, 'true');
-                        }
-                    }
-                });
-            }, 30000);
+            }, 1500);
         }
 
         // تحميل أداء الأسبوع (من السبت إلى الجمعة)
@@ -1374,20 +1095,6 @@ END:VCALENDAR`;
                 btn.classList.remove('bg-warm-goldLight', 'bg-warm-amberDark', 'text-warm-amberDark', 'text-warm-goldLight');
                 btn.classList.add('bg-warm-amberPrimary', 'text-white');
                 localStorage.setItem(storageKey, 0);
-            }
-        }
-
-        function requestNotificationPermission() {
-            if (!("Notification" in window)) {
-                alert("متصفحك لا يدعم الإشعارات.");
-            } else if (Notification.permission === "granted") {
-                new Notification("عبادات مسلم", { body: "الإشعارات مفعلة بنجاح والتنبيهات ستصلك في المواعيد المحددة." });
-            } else {
-                Notification.permission !== "denied" && Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        new Notification("عبادات مسلم", { body: "تم تفعيل الإشعارات بنجاح!" });
-                    }
-                });
             }
         }
 
