@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#963814">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="عبادات مسلم">
     <title>خريطة الوصول - منصة عبادات مسلم</title>
     
+    <!-- PWA Manifest Inline Data URI -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"عبادات مسلم - خريطة الوصول","short_name":"عبادات مسلم","start_url":".","display":"standalone","background_color":"#FDF7EF","theme_color":"#963814","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/3602/3602123.png","sizes":"512x512","type":"image/png"}]}'>
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3602/3602123.png">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -78,6 +86,17 @@
     </style>
 </head>
 <body class="min-h-screen pb-20 selection:bg-warm-goldLight selection:text-warm-amberDark">
+
+    <!-- شريط تثبيت التطبيق PWA للموبايل -->
+    <div id="pwa-install-banner" class="hidden bg-warm-amberDark text-white p-3 px-4 shadow-md flex justify-between items-center text-xs font-bold font-amiri sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <i data-lucide="download" class="w-4 h-4 text-warm-gold"></i>
+            <span>تثبيت تطبيق "عبادات مسلم" على الشاشة الرئيسية للجوال</span>
+        </div>
+        <button id="pwa-install-btn" class="bg-warm-gold hover:bg-warm-goldLight text-warm-amberDark font-bold px-3 py-1 rounded-lg text-xs transition">
+            تثبيت الآن 📲
+        </button>
+    </div>
 
     <!-- شاشة تسجيل الدخول -->
     <div id="login-section" class="max-w-md mx-auto mt-14 p-8 bg-white rounded-3xl ornate-card border-warm-borderGold/40 relative">
@@ -157,7 +176,7 @@
                     <i data-lucide="heart-handshake" class="w-4 h-4 text-warm-amberPrimary"></i> الأذكار وأدعيتي
                 </button>
                 <button onclick="switchTab('reminders')" id="tab-reminders" class="tab-btn px-4 py-3 text-sm font-bold text-warm-muted rounded-xl transition-all flex items-center gap-2">
-                    <i data-lucide="bell" class="w-4 h-4 text-warm-amberPrimary"></i> التنبيهات
+                    <i data-lucide="bell" class="w-4 h-4 text-warm-amberPrimary"></i> التنبيهات والتقويم
                 </button>
             </div>
         </div>
@@ -543,69 +562,134 @@
             <div class="bg-white p-6 rounded-3xl ornate-card">
                 <div class="flex items-center justify-between border-b border-warm-border pb-3.5 mb-2">
                     <h3 class="font-amiri font-bold text-warm-amberDark text-xl flex items-center gap-2.5">
-                        <i data-lucide="clock" class="w-6 h-6 text-warm-gold"></i> ضبط أوقات التنبيهات والتذكير لكل ورد
+                        <i data-lucide="clock" class="w-6 h-6 text-warm-gold"></i> ضبط أوقات التنبيهات والربط بـ تقويم الهاتف
                     </h3>
                     <span id="auto-save-status" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 hidden flex items-center gap-1">
                         <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> تم الحفظ تلقائياً
                     </span>
                 </div>
-                <p class="text-xs text-warm-muted font-bold mb-6">تتم أوقات التنبيهات بالحفظ التلقائي الفوري فور تغيير أي وقت لتسهيل الاستخدام.</p>
+                
+                <div class="bg-warm-goldLight/50 p-4 rounded-2xl border border-warm-borderGold/40 text-xs font-bold text-warm-amberDark mb-6 leading-relaxed">
+                    💡 <strong>لضمان وصول التنبيه بصوت واهتزاز على الهاتف أثناء قفل الشاشة:</strong><br>
+                    اضبط الوقت لكل ورد، ثم اضغط على زر <strong>"Google Calendar"</strong> أو <strong>"تقويم الهاتف (.ics)"</strong> لإضافة تذكير يومي مكرر في تقويم جوالك مباشرة.
+                </div>
 
                 <form id="reminders-form" class="space-y-5" onsubmit="event.preventDefault();">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="p-3.5 bg-warm-bg rounded-2xl border border-warm-border">
-                            <label class="block text-sm font-bold text-warm-amberDark mb-2 flex items-center gap-1.5">
+                    <div class="grid grid-cols-1 gap-4">
+                        
+                        <!-- أذكار الصباح -->
+                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
+                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
                                 <i data-lucide="sun" class="w-4 h-4 text-warm-gold"></i> وقت أذكار الصباح
                             </label>
-                            <input type="time" id="time-morning" class="w-full px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt">
+                            <div class="flex flex-col sm:flex-row gap-2.5">
+                                <input type="time" id="time-morning" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="addToGoogleCalendar('أذكار الصباح ☀️', 'time-morning')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
+                                        📅 Google Calendar
+                                    </button>
+                                    <button type="button" onclick="downloadIcsReminder('أذكار الصباح ☀️', 'time-morning')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
+                                        📲 تقويم الهاتف (.ics)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-3.5 bg-warm-bg rounded-2xl border border-warm-border">
-                            <label class="block text-sm font-bold text-warm-amberDark mb-2 flex items-center gap-1.5">
+
+                        <!-- أذكار المساء -->
+                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
+                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
                                 <i data-lucide="moon" class="w-4 h-4 text-warm-amberPrimary"></i> وقت أذكار المساء
                             </label>
-                            <input type="time" id="time-evening" class="w-full px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt">
+                            <div class="flex flex-col sm:flex-row gap-2.5">
+                                <input type="time" id="time-evening" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="addToGoogleCalendar('أذكار المساء 🌙', 'time-evening')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
+                                        📅 Google Calendar
+                                    </button>
+                                    <button type="button" onclick="downloadIcsReminder('أذكار المساء 🌙', 'time-evening')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
+                                        📲 تقويم الهاتف (.ics)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-3.5 bg-warm-bg rounded-2xl border border-warm-border">
-                            <label class="block text-sm font-bold text-warm-amberDark mb-2 flex items-center gap-1.5">
+
+                        <!-- قيام الليل -->
+                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
+                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
                                 <i data-lucide="sparkles" class="w-4 h-4 text-warm-gold"></i> وقت قيام الليل والوتر
                             </label>
-                            <input type="time" id="time-qiyam" class="w-full px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt">
+                            <div class="flex flex-col sm:flex-row gap-2.5">
+                                <input type="time" id="time-qiyam" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="addToGoogleCalendar('قيام الليل والوتر 🌌', 'time-qiyam')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
+                                        📅 Google Calendar
+                                    </button>
+                                    <button type="button" onclick="downloadIcsReminder('قيام الليل والوتر 🌌', 'time-qiyam')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
+                                        📲 تقويم الهاتف (.ics)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-3.5 bg-warm-bg rounded-2xl border border-warm-border">
-                            <label class="block text-sm font-bold text-warm-amberDark mb-2 flex items-center gap-1.5">
-                                <i data-lucide="disc" class="w-4 h-4 text-warm-amberPrimary"></i> وقت الباقيات الصالحات
-                            </label>
-                            <input type="time" id="time-baqiyat" class="w-full px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt">
-                        </div>
-                        <div class="p-3.5 bg-warm-bg rounded-2xl border border-warm-border">
-                            <label class="block text-sm font-bold text-warm-amberDark mb-2 flex items-center gap-1.5">
-                                <i data-lucide="heart" class="w-4 h-4 text-warm-rubyWarm"></i> وقت ورد الدعاء والمناجاة
-                            </label>
-                            <input type="time" id="time-duaa" class="w-full px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt">
-                        </div>
-                        <div class="p-3.5 bg-warm-bg rounded-2xl border border-warm-border">
-                            <label class="block text-sm font-bold text-warm-amberDark mb-2 flex items-center gap-1.5">
+
+                        <!-- ورد القرآن الكريم -->
+                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
+                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
                                 <i data-lucide="book-open" class="w-4 h-4 text-warm-amberPrimary"></i> وقت قراءة القرآن الكريم
                             </label>
-                            <input type="time" id="time-quran" class="w-full px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt">
+                            <div class="flex flex-col sm:flex-row gap-2.5">
+                                <input type="time" id="time-quran" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="addToGoogleCalendar('ورد القرآن الكريم 📖', 'time-quran')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
+                                        📅 Google Calendar
+                                    </button>
+                                    <button type="button" onclick="downloadIcsReminder('ورد القرآن الكريم 📖', 'time-quran')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
+                                        📲 تقويم الهاتف (.ics)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-3.5 bg-warm-bg rounded-2xl border border-warm-border">
-                            <label class="block text-sm font-bold text-warm-amberDark mb-2 flex items-center gap-1.5">
+
+                        <!-- ورد الاستغفار -->
+                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
+                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
                                 <i data-lucide="repeat" class="w-4 h-4 text-warm-amberPrimary"></i> وقت الاستغفار (100 مرة)
                             </label>
-                            <input type="time" id="time-istighfar" class="w-full px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt">
+                            <div class="flex flex-col sm:flex-row gap-2.5">
+                                <input type="time" id="time-istighfar" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="addToGoogleCalendar('ورد الاستغفار ✨', 'time-istighfar')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
+                                        📅 Google Calendar
+                                    </button>
+                                    <button type="button" onclick="downloadIcsReminder('ورد الاستغفار ✨', 'time-istighfar')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
+                                        📲 تقويم الهاتف (.ics)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-3.5 bg-warm-bg rounded-2xl border border-warm-border">
-                            <label class="block text-sm font-bold text-warm-amberDark mb-2 flex items-center gap-1.5">
+
+                        <!-- الصلاة على النبي -->
+                        <div class="p-4 bg-warm-bg rounded-2xl border border-warm-border space-y-3">
+                            <label class="block text-sm font-bold text-warm-amberDark flex items-center gap-1.5">
                                 <i data-lucide="heart-handshake" class="w-4 h-4 text-warm-rubyWarm"></i> وقت الصلاة على النبي ﷺ
                             </label>
-                            <input type="time" id="time-salawat" class="w-full px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt">
+                            <div class="flex flex-col sm:flex-row gap-2.5">
+                                <input type="time" id="time-salawat" class="px-3.5 py-2 bg-white border border-warm-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-warm-gold text-warm-txt flex-1">
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="addToGoogleCalendar('ورد الصلاة على النبي ﷺ 💚', 'time-salawat')" class="bg-warm-goldLight hover:bg-warm-gold hover:text-white text-warm-amberDark text-xs font-bold px-3 py-2 rounded-xl border border-warm-borderGold flex items-center gap-1 transition">
+                                        📅 Google Calendar
+                                    </button>
+                                    <button type="button" onclick="downloadIcsReminder('ورد الصلاة على النبي ﷺ 💚', 'time-salawat')" class="bg-white hover:bg-warm-goldLight text-warm-txt text-xs font-bold px-3 py-2 rounded-xl border border-warm-border flex items-center gap-1 transition">
+                                        📲 تقويم الهاتف (.ics)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
 
                     <div class="pt-2">
                         <button type="button" onclick="requestNotificationPermission()" class="w-full bg-warm-bg hover:bg-warm-goldLight text-warm-txt hover:text-warm-amberDark text-sm font-bold py-3.5 rounded-2xl border border-warm-border transition flex items-center justify-center gap-2">
-                            <i data-lucide="bell-ring" class="w-4 h-4 text-warm-gold"></i> تفعيل إشعارات المتصفح والتنبيهات اليومية
+                            <i data-lucide="bell-ring" class="w-4 h-4 text-warm-gold"></i> تفعيل إشعارات المتصفح والتنبيهات المباشرة
                         </button>
                     </div>
                 </form>
@@ -640,13 +724,14 @@
         </div>
     </div>
 
-    <!-- Script JavaScript الأصلي مع إصلاح الحفظ الخارجي والأذكار -->
+    <!-- Script JavaScript الرئيسي مع دعم التقويم و PWA -->
     <script>
         const SUPABASE_URL = "https://foovhcbococbipggfhmv.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_C-v8EdUNhwZ7MjkPLonvmA_vD_jYWcy";
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let currentUser = JSON.parse(localStorage.getItem('user_data')) || null;
+        let deferredPrompt = null;
 
         const allTaskKeys = [
             'fard_fajr', 'sunnah_fajr',
@@ -674,6 +759,25 @@
         function getTodayStr() {
             return new Date().toISOString().split('T')[0];
         }
+
+        // إعداد PWA Install Prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) banner.classList.remove('hidden');
+        });
+
+        document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('pwa-install-banner')?.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
 
         window.onload = () => {
             const gregorianDate = new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -717,6 +821,68 @@
 
             startNotificationChecker();
         };
+
+        // دوال الربط بتقويم الهاتف
+        function addToGoogleCalendar(title, timeInputId) {
+            const timeVal = document.getElementById(timeInputId).value;
+            if (!timeVal) {
+                alert("برجاء تحديد وقت التذكير أولاً قبل الإضافة للتقويم.");
+                return;
+            }
+            const [hh, mm] = timeVal.split(':');
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+
+            const startIso = `${year}${month}${day}T${hh}${mm}00`;
+            const endIso = `${year}${month}${day}T${hh}${String(parseInt(mm) + 15).padStart(2, '0')}00`;
+
+            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent('تذكير يومي مكرر من تطبيق عبادات مسلم')}&location=${encodeURIComponent('منصة عبادات مسلم')}&dates=${startIso}/${endIso}&recur=RRULE:FREQ=DAILY`;
+            window.open(googleUrl, '_blank');
+        }
+
+        function downloadIcsReminder(title, timeInputId) {
+            const timeVal = document.getElementById(timeInputId).value;
+            if (!timeVal) {
+                alert("برجاء تحديد وقت التذكير أولاً قبل الإضافة للتقويم.");
+                return;
+            }
+            const [hh, mm] = timeVal.split(':');
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+
+            const startIso = `${year}${month}${day}T${hh}${mm}00`;
+            const endIso = `${year}${month}${day}T${hh}${String(parseInt(mm) + 15).padStart(2, '0')}00`;
+
+            const icsContent = 
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//عبادات مسلم//تطبيق الأوراد//AR
+BEGIN:VEVENT
+SUMMARY:${title}
+DESCRIPTION:تذكير يومي مكرر من تطبيق عبادات مسلم
+DTSTART:${startIso}
+DTEND:${endIso}
+RRULE:FREQ=DAILY
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:${title}
+END:VALARM
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', `${title.replace(/[^\w\s]/gi, '')}.ics`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
         function updateMainPageCounters() {
             const today = getTodayStr();
@@ -1100,7 +1266,7 @@
             document.getElementById('counter-modal').classList.add('hidden');
         }
 
-        // قوائم الأذكار مع حفظ حالة العداد والإنهاء لكل ذكر
+        // قوائم الأذكار
         function renderAdhkarLists() {
             const userPhone = currentUser ? currentUser.phone : 'guest';
             const today = getTodayStr();
@@ -1217,7 +1383,7 @@
             } else if (Notification.permission === "granted") {
                 new Notification("عبادات مسلم", { body: "الإشعارات مفعلة بنجاح والتنبيهات ستصلك في المواعيد المحددة." });
             } else {
-                Notification.requestPermission().then(permission => {
+                Notification.permission !== "denied" && Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
                         new Notification("عبادات مسلم", { body: "تم تفعيل الإشعارات بنجاح!" });
                     }
